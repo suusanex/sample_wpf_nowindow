@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -30,31 +31,27 @@ namespace sample_wpf_nowindow
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Loaded");
+
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
+        {
+            Trace.WriteLine($"{string.Join(",", hwnd, msg, wparam, lparam)}");
+            return IntPtr.Zero;
         }
 
         private void MainWindow_OnInitialized(object sender, EventArgs e)
         {
-            Task.Run(() =>
-            {
-                for (int i = 0; i < 50; i++)
-                {
-                    Dispatcher.Invoke(() => { Trace.WriteLine($"this Handle={new WindowInteropHelper(this).Handle}"); });
-                    Task.Delay(new TimeSpan(0, 0, 1)).Wait();
-                }
+            var helper = new WindowInteropHelper(this);
+            helper.EnsureHandle();
+            var source = HwndSource.FromHwnd(helper.Handle);
+            source.AddHook(WndProc);
 
-            });
+        }
 
-
-            //Task.Run(() =>
-            //{
-            //    Task.Delay(new TimeSpan(0, 0, 3)).Wait();
-            //    Dispatcher.Invoke(() =>
-            //    {
-            //        var wnd = new MenuWindow();
-            //        wnd.ShowDialog();
-            //        Close();
-            //    });
-            //});
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            MessageBox.Show("Closing");
         }
     }
 }

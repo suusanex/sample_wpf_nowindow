@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sample_wpf_nowindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="0" Width="0" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False" Visibility="Hidden" Initialized="MainWindow_OnInitialized" Loaded="MainWindow_OnLoaded">
+        Title="MainWindow" Height="0" Width="0" WindowStyle="None" AllowsTransparency="True" ShowInTaskbar="False" Visibility="Hidden" Initialized="MainWindow_OnInitialized" Loaded="MainWindow_OnLoaded" Closing="MainWindow_OnClosing">
     <DockPanel>
         
     </DockPanel>
